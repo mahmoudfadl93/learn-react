@@ -1,53 +1,30 @@
 import React, { Component } from "react";
 import Navbar from "./components/layout/Navbar";
 import Users from "./components/users/Users";
+import axios from "axios";
 
 //import React, { Component, Fragment } from "react";
 import "./App.css";
 
 class App extends Component {
+  state = {
+    users: [],
+    loading: false,
+  };
+  async componentDidMount() {
+    this.setState({ loading: true });
+    const res = await axios.get("https://api.github.com/users");
+    console.log(res.data);
+    this.setState({ loading: false, users: res.data });
+  }
   render() {
-    //8. Intro To JSX & Fragments
-    // return (
-    //   <Fragment>
-    //     <h1>Hello From React</h1>
-    //   </Fragment>
-    // );
-    // return (
-    //   <div className="App">
-    //     <h1>Hello From {name}</h1>
-    //   </div>
-    // );
-
-    // return React.createElement(
-    //   "div",
-    //   { className: "App" },
-    //   React.createElement("h1", null, "Hello From React")
-    // );
-
-    // 9. Expressions & Conditionals In JSX
-
-    // const name = "mahmoud";
-    // const loading = false;
-    // const showName = false;
-    // return (
-    //   <div className="App">
-    //     {loading ? (
-    //       <h4>loading.....</h4>
-    //     ) : (
-    //       <h1>Hello From {showName && name}</h1>
-    //     )}
-    //   </div>
-    // );
-
-    return(
+    return (
       <div className="App">
-        <Navbar title="Github Finder" icon="fab fa-github"/>
+        <Navbar title="Github Finder" icon="fab fa-github" />
         {/* <UserItem /> */}
-        <div className='container'>
-        <Users />
+        <div className="container">
+          <Users loading={this.state.loading} users={this.state.users} />
         </div>
-      
       </div>
     );
   }
