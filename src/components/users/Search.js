@@ -1,23 +1,28 @@
 import React, { Component } from "react";
-//import PropTypes from "prop-types";
-export class Search extends Component {
+import PropTypes from "prop-types";
+class Search extends Component {
   state = {
     text: "",
   };
 
-  // static PropTypes = {
-  //   searchUsers: PropTypes.func.isRequired,
-  //   clearUsers: PropTypes.func.isRequired,
-  //   showClear: PropTypes.bool.isRequired,
-  // };
+  static propTypes = {
+    searchUsers: PropTypes.func.isRequired,
+    clearUsers: PropTypes.func.isRequired,
+    showClear: PropTypes.bool.isRequired,
+    setAlert: PropTypes.func.isRequired,
+  };
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
   onSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state.text);
-    this.props.searchUsers(this.state.text);
-    this.setState({ text: " " });
+    if (this.state.text === "") {
+      this.props.setAlert("please enter somethis", "light");
+    } else {
+      console.log(this.state.text);
+      this.props.searchUsers(this.state.text);
+      this.setState({ text: " " });
+    }
   };
 
   render() {
